@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  admin
+  hr
+  manager
+  employee
+}
+
+model User {
+  id         String  @id @default(cuid())
+  email      String  @unique
+  password   String
+  name       String
+  role       Role    @default(employee)
+  department String?
+  position   String?
+  approved   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  surveyResponses SurveyResponse[]
+}
+
+model SurveyTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  questions SurveyTemplateQuestion[]
+  surveys   Survey[]
+}
+
+model SurveyTemplateQuestion {
+  id         String @id @default(cuid())
+  templateId String
+  text       String
+  type       String
+
+  template SurveyTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+}
+
+model Survey {
+  id                 String   @id @default(cuid())
+  name               String
+  departments        String[]
+  periodicity        String
+  anonymityThreshold Int
+  status             String   @default("active")
+  archived           Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  templateId String
+  template   SurveyTemplate @relation(fields: [templateId], references: [id])
+
+  responses SurveyResponse[]
+}
+
+model SurveyResponse {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  surveyId String
+  survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  answers Json
+}

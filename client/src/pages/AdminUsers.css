@@ -1,0 +1,150 @@
+.users-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.users-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.users-header p {
+  color: #6b7a99;
+  margin-top: 4px;
+}
+
+.users-count {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #7c5cff;
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.users-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  padding: 20px;
+}
+
+.users-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.users-filters button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #e3e7f0;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.users-filters button.active {
+  background: #7c5cff;
+  color: #fff;
+  border-color: transparent;
+}
+
+.users-filters .refresh {
+  margin-left: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th {
+  text-align: left;
+  font-size: 13px;
+  color: #8a94ad;
+  padding: 12px 8px;
+}
+
+.users-table td {
+  padding: 14px 8px;
+  border-top: 1px solid #eef1f7;
+  font-weight: 600;
+}
+
+.users-table .email {
+  color: #6b7a99;
+  font-weight: 500;
+}
+
+.role-badge {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #f1f3ff;
+  color: #4c5fff;
+}
+
+.role-badge.admin {
+  background: #efe9ff;
+  color: #7c5cff;
+}
+
+.role-badge.hr {
+  background: #e8f0ff;
+  color: #4c7dff;
+}
+
+.role-badge.manager {
+  background: #e9f7f1;
+  color: #1c9c6b;
+}
+
+.role-badge.employee {
+  background: #f4f6fa;
+  color: #555;
+}
+
+.status-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-badge.approved {
+  background: #e6f7ef;
+  color: #1c9c6b;
+}
+
+.status-badge.pending {
+  background: #fff3db;
+  color: #c88719;
+}
+
+.approve-btn {
+  padding: 8px 14px;
+  background: #7c5cff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.empty {
+  text-align: center;
+  padding: 30px;
+  color: #8a94ad;
+}

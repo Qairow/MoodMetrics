@@ -1,0 +1,58 @@
+:root {
+  /* Brand */
+  --purple: #7c5cff;
+  --purple-600: #6d4bff;
+  --purple-700: #5b39f5;
+
+  /* Light UI base */
+  --bg-primary: #f4f6fb;     /* общий фон страницы */
+  --bg-secondary: #ffffff;   /* карточки, сайдбар */
+  --bg-tertiary: #f0f3fa;    /* поля, вторичные области */
+  --surface: rgba(255,255,255,0.70);
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  /* Borders / shadows */
+  --border: rgba(15, 23, 42, 0.10);
+  --border-strong: rgba(15, 23, 42, 0.14);
+
+  --shadow-sm: 0 6px 16px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 18px 38px rgba(15, 23, 42, 0.10);
+
+  /* Radius */
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 20px;
+
+  /* Sizes */
+  --page-max: 1180px;
+
+  /* Status */
+  --green: #10b981;
+  --orange: #f59e0b;
+  --red: #ef4444;
+}
+
+:root {
+  --bg-app: #f6f7fb;
+  --bg-card: #ffffff;
+  --bg-muted: #f1f3f8;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  --purple: #7c6cff;
+  --purple-soft: #edeaff;
+
+  --green: #22c55e;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+
+  --border: #e5e7eb;
+
+  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.06);
+  --radius: 14px;
+}

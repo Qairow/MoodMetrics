@@ -1,0 +1,265 @@
+/* ===== MoodMetrics Employees Page ===== */
+
+.employees-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.employees-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.employees-header .page-title {
+  margin: 0;
+}
+
+.employees-header .page-subtitle {
+  margin-top: 6px;
+  color: rgba(30, 41, 59, 0.7);
+  font-weight: 600;
+}
+
+/* Stats row */
+.employees-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* Stat cards */
+.stat-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 18px 36px rgba(2, 6, 23, 0.06);
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(124, 92, 255, 0.10);
+  border: 1px solid rgba(124, 92, 255, 0.18);
+  color: #6d5cff;
+}
+
+.stat-title {
+  font-weight: 800;
+  color: rgba(30, 41, 59, 0.8);
+  font-size: 13px;
+}
+
+.stat-value {
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+/* Main Card (table) */
+.employees-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 22px 50px rgba(2, 6, 23, 0.08);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Card head */
+.employees-card-head {
+  padding: 16px 16px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.employees-card-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.employees-card-subtitle {
+  margin-top: 4px;
+  font-weight: 700;
+  color: rgba(30, 41, 59, 0.65);
+  font-size: 13px;
+}
+
+.employees-dept-select {
+  min-width: 240px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0 12px;
+  font-weight: 800;
+}
+
+.employees-dept-select:focus {
+  outline: none;
+  border-color: rgba(124, 92, 255, 0.45);
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.12);
+}
+
+/* Table */
+.employees-table {
+  padding: 6px 16px 14px;
+}
+
+.employees-table-head {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr 1.1fr;
+  gap: 12px;
+  padding: 10px 10px;
+  color: rgba(30, 41, 59, 0.55);
+  font-weight: 900;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+/* Row */
+.employees-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr 1.1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 10px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.employees-row:last-child {
+  border-bottom: none;
+}
+
+.emp-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.emp-title {
+  font-weight: 900;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emp-sub {
+  font-weight: 700;
+  font-size: 12px;
+  color: rgba(30, 41, 59, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emp-muted {
+  font-weight: 800;
+  color: rgba(30, 41, 59, 0.7);
+}
+
+/* Badge (index / risk) */
+.emp-badge {
+  justify-self: start;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  width: fit-content;
+}
+
+/* Loading / Empty */
+.employees-loading,
+.employees-empty {
+  padding: 18px 10px;
+  font-weight: 800;
+  color: rgba(30, 41, 59, 0.75);
+}
+
+/* Button in header (if your global btn-primary differs) */
+.employees-header .btn.btn-primary {
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 900;
+  box-shadow: 0 16px 30px rgba(124, 92, 255, 0.25);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .employees-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .employees-table-head,
+  .employees-row {
+    grid-template-columns: 2fr 1.2fr 0.8fr 1fr;
+  }
+
+  /* Hide last column ("Последний пульс") on medium */
+  .employees-table-head > :nth-child(5),
+  .employees-row > :nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 780px) {
+  .employees-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .employees-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .employees-card-head {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .employees-dept-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .employees-table-head {
+    display: none;
+  }
+
+  .employees-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 10px;
+  }
+
+  .emp-badge {
+    justify-self: start;
+  }
+}

@@ -1,0 +1,107 @@
+.survey-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.survey-item {
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.survey-q {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.survey-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(124, 92, 255, 0.14);
+  border: 1px solid rgba(124, 92, 255, 0.28);
+  color: #e9e2ff;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.survey-text {
+  color: var(--text-primary);
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.survey-hint {
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.scale-btn {
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.scale-btn input {
+  display: none;
+}
+
+.scale-btn:hover {
+  border-color: rgba(124, 92, 255, 0.35);
+  background: rgba(124, 92, 255, 0.10);
+}
+
+.scale-btn.on {
+  background: rgba(124, 92, 255, 0.18);
+  border-color: rgba(124, 92, 255, 0.50);
+}
+
+.survey-comment {
+  margin-top: 14px;
+}
+
+.area {
+  margin-top: 8px;
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.area:focus {
+  outline: none;
+  border-color: rgba(124, 92, 255, 0.65);
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22);
+}
+
+@media (max-width: 768px) {
+  .scale {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

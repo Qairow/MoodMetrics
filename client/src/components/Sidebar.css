@@ -1,0 +1,262 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.main-content {
+  flex: 1;
+  padding: 0; /* страницы сами дают padding */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  z-index: 100;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 6px 10px 6px;
+  margin-bottom: 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-square {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.logo-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.logo-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 800;
+  margin-top: 3px;
+}
+
+/* nav */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+  flex: 1;
+  overflow: auto;
+}
+
+.nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  font-weight: 900;
+}
+
+.nav-item:hover {
+  background: rgba(124, 108, 255, 0.08);
+}
+
+.nav-item.active {
+  background: var(--purple-soft);
+  color: var(--purple);
+  border: 1px solid rgba(124, 108, 255, 0.14);
+}
+
+/* footer cards */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===== АНОНИМНОСТЬ (новый дизайн как в рефе) ===== */
+
+.anonymity-card {
+  background: #ecfdf3; /* светло-зелёный */
+  border: 1px solid #86efac;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.anonymity-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #166534;
+}
+
+.anonymity-header::before {
+  content: "🔒";
+  font-size: 14px;
+}
+
+.anonymity-text {
+  font-size: 13px;
+  color: #14532d;
+  line-height: 1.4;
+}
+
+/* убираем старый toggle */
+.toggle-on {
+  display: none;
+}
+
+
+.profile-button,
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-button:hover,
+.logout-button:hover {
+  border-color: rgba(124, 108, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.logout-button {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.22);
+  color: #b91c1c;
+}
+
+/* ======= Overlay mobile ======= */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.30);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 99;
+}
+
+.sidebar-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-close {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* topbar */
+.mobile-topbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    display: block;
+  }
+
+  .mobile-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .burger {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mobile-title {
+    font-weight: 900;
+    color: var(--text-primary);
+  }
+
+  .sidebar {
+    width: 260px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close {
+    display: inline-flex;
+    margin-top: 6px;
+  }
+}

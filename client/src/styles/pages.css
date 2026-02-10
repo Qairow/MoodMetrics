@@ -1,0 +1,287 @@
+/* ===== PAGE LAYOUT (единая сетка) ===== */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  color: var(--text-primary);
+}
+
+.page-subtitle {
+  margin-top: 6px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.page-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* сетка карточек */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: stretch; /* важно: ровные по высоте */
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* ===== CARD (универсальная карточка) ===== */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.card-desc {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  font-size: 0.95rem;
+}
+
+/* делаем одинаковую высоту у карточек настроек/уведомлений и т.д. */
+.card.fill {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.2s ease, background 0.18s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.03);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: rgba(124, 92, 255, 0.10);
+  border-color: rgba(124, 92, 255, 0.35);
+}
+
+/* ===== INPUTS / SELECT ===== */
+.field {
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.field:focus {
+  outline: none;
+  border-color: rgba(124, 92, 255, 0.65);
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22);
+}
+
+/* ===== TAGS / PILLS ===== */
+.pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+/* ===== TABLE (для списков сотрудников/опросов) ===== */
+.table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.trow {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.7fr 0.7fr 0.9fr;
+  gap: 12px;
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  align-items: center;
+}
+
+.trow.head {
+  color: var(--text-secondary);
+  font-weight: 900;
+  font-size: 0.85rem;
+  padding-top: 0;
+}
+
+.badge {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 46px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  font-weight: 900;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .page-actions {
+    justify-content: flex-start;
+  }
+  .trow {
+    grid-template-columns: 1.2fr 1fr 0.8fr 0.8fr;
+  }
+  .trow > div:nth-child(5) {
+    display: none;
+  }
+}
+
+/* ===== GLOBAL: fix native select dropdown in dark theme ===== */
+select,
+option {
+  color: var(--text-primary);
+}
+
+select {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ВАЖНО: многие браузеры берут стиль option только частично,
+   но это сильно уменьшит "белую простыню" */
+option {
+  background-color: var(--bg-secondary);
+}
+
+/* Firefox иногда любит white bg */
+select:focus {
+  outline: none;
+}
+
+/* ===== CHECKBOX (project style) ===== */
+.chk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-primary);
+  font-weight: 900;
+}
+
+.chk input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease,
+    transform 0.12s ease;
+}
+
+.chk input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22);
+}
+
+.chk input:checked {
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.chk input:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20.285 6.709a1 1 0 0 1 .006 1.414l-9.2 9.25a1 1 0 0 1-1.414.006l-4.85-4.8a1 1 0 0 1 1.406-1.422l4.14 4.1 8.49-8.54a1 1 0 0 1 1.422-.008z'/%3E%3C/svg%3E") no-repeat center / contain;
+  background: white;
+}
+
+.chk small {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  line-height: 1.35;
+}

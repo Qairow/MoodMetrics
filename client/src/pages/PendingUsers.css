@@ -1,0 +1,9 @@
+.pending-error {
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.55);
+  background: rgba(239, 68, 68, 0.10);
+  color: #ff8c8c;
+  font-weight: 800;
+}

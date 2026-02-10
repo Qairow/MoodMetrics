@@ -1,0 +1,146 @@
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  padding: 2rem;
+}
+
+.home-content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+.home-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.logo-square {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+}
+
+.logo-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.logo-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.home-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.home-description {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.home-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-signin,
+.btn-register,
+.btn-profile {
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-signin {
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  color: white;
+}
+
+.btn-signin:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+}
+
+.btn-register {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+}
+
+.btn-register:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--purple);
+}
+
+.btn-profile {
+  background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+  color: white;
+}
+
+.btn-profile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+}
+
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 1.8rem;
+  }
+
+  .home-description {
+    font-size: 1rem;
+  }
+
+  .home-actions {
+    flex-direction: column;
+  }
+
+  .btn-signin,
+  .btn-register {
+    width: 100%;
+  }
+
+  .logo-title {
+    font-size: 2rem;
+  }
+
+  .logo-square {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+}

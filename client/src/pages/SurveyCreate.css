@@ -1,0 +1,268 @@
+/* SurveyCreate.css — light MoodMetrics style */
+
+.survey-create {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Если .page уже задаёт фон — можешь убрать этот блок.
+   Но для точного вида как на рефе — лучше оставить. */
+.page.survey-create {
+  padding: 28px;
+  background:
+    radial-gradient(1200px 600px at 30% 0%, rgba(124, 92, 255, 0.10), transparent 55%),
+    radial-gradient(1000px 600px at 70% 10%, rgba(96, 165, 250, 0.10), transparent 55%),
+    #f5f7fb;
+  min-height: calc(100vh - 24px);
+}
+
+@media (max-width: 768px) {
+  .page.survey-create {
+    padding: 18px;
+  }
+}
+
+/* header */
+.survey-create .page-header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .survey-create .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.survey-create .page-title {
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .survey-create .page-title {
+    font-size: 34px;
+  }
+}
+
+.survey-create .page-subtitle {
+  margin-top: 10px;
+  color: #64748b;
+  font-weight: 600;
+  max-width: 720px;
+}
+
+.page-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* layout */
+.survey-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+}
+
+@media (max-width: 980px) {
+  .survey-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards — белые, с мягкой тенью как на рефе */
+.card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e7ecf5;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+}
+
+.card.fill {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.card-desc {
+  margin-top: 4px;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* form */
+.form-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.field {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.field:focus {
+  border-color: rgba(124, 92, 255, 0.50);
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.12);
+}
+
+.help {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px dashed rgba(124, 92, 255, 0.25);
+  background: rgba(124, 92, 255, 0.06);
+  color: #475569;
+  font-weight: 700;
+}
+
+/* Dept counter bubble */
+.dept-count {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 900;
+}
+
+/* Chips like in reference */
+.dept-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.dept-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 800;
+  color: #0f172a;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.dept-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+  border-color: rgba(124, 92, 255, 0.35);
+}
+
+/* checkbox look (как маленькая галка в квадрате) */
+.dept-chip input {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+/* галочка */
+.dept-chip input::after {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(-45deg);
+  opacity: 0;
+  margin-top: -1px;
+}
+
+.dept-chip input:checked {
+  border-color: rgba(124, 92, 255, 0.45);
+  background: linear-gradient(135deg, #6d5cff, #7c5cff);
+}
+
+.dept-chip input:checked::after {
+  opacity: 1;
+}
+
+/* selected chip background */
+.dept-chip:has(input:checked) {
+  border-color: rgba(124, 92, 255, 0.35);
+  background: rgba(124, 92, 255, 0.06);
+}
+
+/* Buttons (если у тебя уже есть .btn — можно не трогать) */
+.btn.btn-secondary {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.btn.btn-primary {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 92, 255, 0.25);
+  background: linear-gradient(135deg, #6d5cff, #7c5cff);
+  color: #ffffff;
+  font-weight: 900;
+  box-shadow: 0 10px 25px rgba(124, 92, 255, 0.25);
+}
+
+.btn.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}

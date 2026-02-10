@@ -1,0 +1,113 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* main content рядом с сайдбаром */
+.main-content {
+  flex: 1;
+  padding: 18px;
+}
+
+/* Верхняя панель по умолчанию скрыта */
+.mobile-topbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    display: block; /* topbar сверху, контент ниже */
+  }
+
+  .mobile-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 12;
+
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+  }
+
+  .burger {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+  }
+
+  .burger:hover {
+    border-color: rgba(124, 92, 255, 0.40);
+    background: rgba(124, 92, 255, 0.10);
+  }
+
+  .burger:active {
+    transform: translateY(1px);
+  }
+
+  .burger:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22);
+  }
+
+  .mobile-title {
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 0.2px;
+  }
+
+  .main-content {
+    padding: 14px;
+  }
+}
+
+/* ===== Profile button в сайдбаре (оставляем цветовую гамму) ===== */
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  height: 44px;
+  padding: 0 12px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--text-primary);
+  cursor: pointer;
+  margin-top: 10px;
+
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.profile-button:hover {
+  border-color: rgba(124, 92, 255, 0.40);
+  background: rgba(124, 92, 255, 0.10);
+}
+
+.profile-button:active {
+  transform: translateY(1px);
+}
+
+.profile-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.22);
+}
