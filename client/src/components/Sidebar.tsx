@@ -15,10 +15,13 @@ import SidebarProfile from './SidebarProfile';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/moodmetricslogo.jpg';
 
+type Role="admin"|"hr"|"manager"|"employee"
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
+
 
 export default function Sidebar({ isOpen, onClose }: Props) {
   const navigate = useNavigate();
