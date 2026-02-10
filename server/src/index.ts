@@ -17,12 +17,26 @@ import employeesRouter from './routes/employees.js';
 import dashboardRouter from "./routes/dashboard.js";
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // разрешаем серверные запросы / postman
+      if (!origin) return callback(null, true);
+
+      // разрешаем все vercel preview + production
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
+
 app.use(express.json());
 app.use('/api/admin/users', adminUsers);
 
@@ -45,11 +59,11 @@ app.use('/api/responses', responsesRoutes);
 app.use('/api/surveys', surveysRouter);
 app.use('/api/employees', employeesRouter);
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 app.get("/health",(req,res)=>res.json({ok:true}))
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
