@@ -44,6 +44,7 @@ app.use('/api/employees', employeesRouter);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+app.get("/health",(req,res)=>res.json({ok:true}))
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
