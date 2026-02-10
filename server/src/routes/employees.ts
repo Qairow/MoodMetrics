@@ -1,51 +1,42 @@
-import express from "express";
+import { Router } from "express";
+import { authenticate, AuthRequest, requireRole } from "../middleware/auth.js";
 import { prisma } from "../prisma.js";
-import { authenticate, requireRole } from "../middleware/auth.js";
 
-const router = express.Router();
+const router = Router();
 
-// сотрудники = approved=true + role employee/manager
-router.get(
-  "/",
-  authenticate,
-  requireRole("admin", "hr", "manager"),
-  async (_req, res) => {
-    const employees = await prisma.user.findMany({
-      where: {
-        approved: true,
-        role: { in: ["employee", "manager"] },
-      },
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        department: true,
-        position: true,
-        createdAt: true,
-      },
-    });
+/**
+ * GET /api/employees/departments
+ * список отделов (из users.department)
+ */
+router.get("/departments", authenticate, async (_req, res) => {
+  const rows = await prisma.user.findMany({
+    distinct: ["department"],
+    where: { department: { not: null } },
+    select: { department: true },
+  });
+  res.json(rows.map((r) => r.department).filter(Boolean));
+});
 
-    res.json(employees);
-  }
-);
-
-// список отделов
-router.get(
-  "/departments",
-  authenticate,
-  requireRole("admin", "hr", "manager"),
-  async (_req, res) => {
-    const depts = await prisma.user.findMany({
-      where: { approved: true, department: { not: null } },
-      distinct: ["department"],
-      select: { department: true },
-      orderBy: { department: "asc" },
-    });
-
-    res.json(depts.map((x) => ({ name: x.department! })));
-  }
-);
+/**
+ * GET /api/employees
+ * подтверждённые сотрудники (admin/hr/manager)
+ */
+router.get("/", authenticate, requireRole("admin", "hr", "manager"), async (_req: AuthRequest, res) => {
+  const employees = await prisma.user.findMany({
+    where: { approved: true, role: { in: ["employee", "manager", "hr"] } },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      department: true,
+      position: true,
+      approved: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  res.json(employees);
+});
 
 export default router;

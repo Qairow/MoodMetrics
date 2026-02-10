@@ -15,6 +15,7 @@ import aiRouter from "./routes/ai.js";
 import surveysRouter from './routes/surveys.js';
 import employeesRouter from './routes/employees.js';
 import dashboardRouter from "./routes/dashboard.js";
+import authRouter from "./routes/auth.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -39,7 +40,7 @@ app.use(
 );
 
 
-app.use(express.json());
+app.use(express.json({ limit: "2mb" }));
 app.use('/api/admin/users', adminUsers);
 
 // Initialize default data
@@ -50,7 +51,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRouter);
 app.use("/api/ai", aiRouter);
 app.use("/api/dashboard", dashboardRouter);
-
+app.use("/api/auth", authRouter);
+app.use("/api/surveys", surveysRouter);
+app.use("/api/dashboard", dashboardRouter);
+app.use("/api/employees", employeesRouter);
 app.use('/api/surveys', surveysRoutes);
 app.use('/api/employees', employeesRoutes);
 app.use('/api/dashboard', dashboardRoutes);
