@@ -1,1 +1,2 @@
-export const API=import.meta.env.VITE_API_URL||""
+export const API=(import.meta as any).env?.VITE_API_URL||""
+
