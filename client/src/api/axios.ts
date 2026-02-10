@@ -1,11 +1,14 @@
-import axios from 'axios';
+import axios from "axios"
 
-export const api = axios.create({
-  baseURL: '/api',
-});
+const API_URL=(import.meta as any).env?.VITE_API_URL||""
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+export const api=axios.create({
+  baseURL:API_URL,
+  withCredentials:true
+})
+
+api.interceptors.request.use(cfg=>{
+  const t=localStorage.getItem("token")
+  if(t) cfg.headers.Authorization=`Bearer ${t}`
+  return cfg
+})
