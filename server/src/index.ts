@@ -19,7 +19,10 @@ import dashboardRouter from "./routes/dashboard.js";
 const app = express();
 const PORT = 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
 app.use('/api/admin/users', adminUsers);
 
@@ -41,6 +44,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/responses', responsesRoutes);
 app.use('/api/surveys', surveysRouter);
 app.use('/api/employees', employeesRouter);
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
