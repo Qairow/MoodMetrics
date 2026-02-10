@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 // 👇 ВАЖНО: добавляем это
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const API=import.meta.env.VITE_API_URL
+
 
 export default defineConfig({
   plugins: [react()],

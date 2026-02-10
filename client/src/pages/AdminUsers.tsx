@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AdminUsers.css';
 
+
 type User = {
   id: string;
   name: string;

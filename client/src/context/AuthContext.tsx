@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import axios from "axios";
+import { API } from "../api";
 
 interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'hr' | 'manager' | 'employee';
+  role: "admin" | "hr" | "manager" | "employee";
   department?: string;
   position?: string;
 }
@@ -14,12 +15,24 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string, role: string, department?: string, position?: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    name: string,
+    role: string,
+    department?: string,
+    position?: string
+  ) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const api = axios.create({
+  baseURL: API || "",
+  withCredentials: true,
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -27,49 +40,73 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    if (savedToken && savedUser) {
+    const savedToken = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
+
+    if (savedToken) {
       setToken(savedToken);
-      setUser(JSON.parse(savedUser));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
     }
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch {}
+    }
+
     setLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/auth/login', { email, password });
-    const { token: newToken, user: newUser } = response.data;
+    if (!API) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
+
+    const response = await api.post("/api/auth/login", { email, password });
+    const { token: newToken, user: newUser } = response.data as { token: string; user: User };
+
     setToken(newToken);
     setUser(newUser);
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(newUser));
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
   };
 
-  const register = async (email: string, password: string, name: string, role: string, department?: string, position?: string) => {
-    const response = await axios.post('/api/auth/register', { 
-      email, 
-      password, 
-      name, 
-      role, 
-      department, 
-      position 
+  const register = async (
+    email: string,
+    password: string,
+    name: string,
+    role: string,
+    department?: string,
+    position?: string
+  ) => {
+    if (!API) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
+
+    const response = await api.post("/api/auth/register", {
+      email,
+      password,
+      name,
+      role,
+      department,
+      position,
     });
-    const { token: newToken, user: newUser } = response.data;
+
+    const { token: newToken, user: newUser } = response.data as { token: string; user: User };
+
     setToken(newToken);
     setUser(newUser);
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(newUser));
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    delete api.defaults.headers.common["Authorization"];
   };
 
   return (
@@ -81,8 +118,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (context === undefined) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 }

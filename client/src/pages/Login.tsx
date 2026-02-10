@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 import logo from '../assets/moodmetricslogo.jpg';
+import {API} from "../api"
+
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,6 +16,12 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+     if (!API) {
+      setError("VITE_API_URL не задан в Vercel (Environment Variables).");
+      return;
+    }
+
     try {
       await login(email, password);
       navigate('/app/dashboard');
@@ -69,12 +78,7 @@ export default function Login() {
               На главную
             </button>
           </div>
-          <div className="login-hint">
-            <p>Тестовые аккаунты:</p>
-            <p>Admin: admin@psycheck.com / admin123</p>
-            <p>HR: hr@psycheck.com / hr123</p>
-            <p>Employee: employee@psycheck.com / emp123</p>
-          </div>
+     
         </form>
       </div>
     </div>
