@@ -8,7 +8,7 @@ const router = express.Router();
 router.get(
   "/",
   authenticate,
-  requireRole(["admin", "hr", "manager"]),
+  requireRole("admin", "hr", "manager"),
   async (_req, res) => {
     const employees = await prisma.user.findMany({
       where: {
@@ -35,7 +35,7 @@ router.get(
 router.get(
   "/departments",
   authenticate,
-  requireRole(["admin", "hr", "manager"]),
+  requireRole("admin", "hr", "manager"),
   async (_req, res) => {
     const depts = await prisma.user.findMany({
       where: { approved: true, department: { not: null } },

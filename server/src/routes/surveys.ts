@@ -1,6 +1,7 @@
 import express from "express";
 import { prisma } from "../prisma.js";
 import { authenticate, requireRole } from "../middleware/auth.js";
+import type { AuthRequest } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -109,12 +110,15 @@ router.post("/:id/responses", authenticate, async (req, res) => {
   }
 
   // сохраняем как SurveyResponse с JSON
-  await prisma.surveyResponse.create({
-    data: {
-      surveyId: id,
-      userId: req.userId!, // из middleware/auth.ts
-      answers: answers,     // Json
-    },
+  
+  const userId=(req as AuthRequest).userId
+
+await prisma.surveyResponse.create({
+  data:{
+    surveyId:id,
+    userId:userId!,
+    answers:answers,
+  },
   });
 
   return res.json({ ok: true });

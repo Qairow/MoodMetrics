@@ -22,7 +22,7 @@ router.get('/', authenticate, (req, res) => {
   res.json(settings);
 });
 
-router.put('/', authenticate, requireRole(['admin', 'hr']), async (req, res) => {
+router.put('/', authenticate, requireRole('admin', 'hr'), async (req, res) => {
   try {
     const { anonymityThreshold, remindersEnabled } = req.body;
 

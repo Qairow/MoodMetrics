@@ -66,7 +66,8 @@ router.post("/chat", authenticate, async (req, res) => {
       body: raw,
     });
 
-    const data = await r.json();
+  const data:any = await r.json();
+
 
     if (!r.ok) {
       const msg = data?.error?.message || "OpenAI error";
@@ -75,9 +76,10 @@ router.post("/chat", authenticate, async (req, res) => {
 
     const text = pickAssistantText(data) || "";
     return res.json({ text });
-  } catch {
-    return res.status(500).json({ error: "Internal server error" });
+   } catch (e: any) {
+    return res.status(500).json({ error: e?.message || e?.error?.message || "Internal server error" });
   }
+
 });
 
 export default router;
