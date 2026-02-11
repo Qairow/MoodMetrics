@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import axios from "axios";
-import { API } from "../api";
+
+import {api} from "../api";
 
 interface User {
   id: string;
@@ -29,10 +29,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const api = axios.create({
-  baseURL: API || "",
-  withCredentials: true,
-});
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -57,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    if (!API) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
+    if (!api) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
 
     const response = await api.post("/api/auth/login", { email, password });
     const { token: newToken, user: newUser } = response.data as { token: string; user: User };
@@ -79,7 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     department?: string,
     position?: string
   ) => {
-    if (!API) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
+    if (!api) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
 
     const response = await api.post("/api/auth/register", {
       email,

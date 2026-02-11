@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import { api } from "../api";
 import { Bell, Filter, CheckCircle2 } from 'lucide-react';
 import './Notifications.css';
 
@@ -37,7 +37,7 @@ export default function Notifications() {
 
       // ✅ пробуем взять с сервера
       // ожидаемый формат: [{id,title,message,type,createdAt,isRead}]
-      const res = await axios.get('/api/notifications');
+      const res = await api.get('/api/notifications');
       setItems(res.data);
     } catch (e) {
       // ✅ если API пока нет — показываем демо (как на макете)
@@ -75,7 +75,7 @@ export default function Notifications() {
   const markAllRead = async () => {
     try {
       // если есть сервер — отмечаем там
-      await axios.post('/api/notifications/mark-read');
+      await api.post('/api/notifications/mark-read');
     } catch {
       // если сервера нет — просто локально
     }

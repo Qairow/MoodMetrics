@@ -11,6 +11,13 @@
     "install:all": "npm install && cd server && npm install && cd ../client && npm install"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "openai": "^6.21.0"
   }
 }

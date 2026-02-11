@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import { api } from "../api";
 import { useNavigate } from "react-router-dom";
 import { Plus, Users, Activity, AlertTriangle, Smile } from "lucide-react";
 import "./Employee.css";
@@ -62,8 +62,8 @@ export default function Employees() {
       try {
         setLoading(true);
         const [empRes, deptRes] = await Promise.all([
-          axios.get<Employee[]>("/api/employees"),
-          axios.get<Dept[]>("/api/employees/departments"),
+          api.get<Employee[]>("/api/employees"),
+          api.get<Dept[]>("/api/employees/departments"),
         ]);
         setEmployees(empRes.data || []);
         setDepartments(deptRes.data || []);

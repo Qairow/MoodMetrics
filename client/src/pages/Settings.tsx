@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Save, Shield, Bell, Users } from "lucide-react";
-import axios from "axios";
-import "./Settings.css";
 
+import "./Settings.css";
+import { api } from "../api";
 type RoleKey = "admin" | "manager" | "employee" | "hr";
 
 export default function Settings() {
@@ -13,7 +13,7 @@ const [loading, setLoading] = useState(false);
 
 useEffect(() => {
   (async () => {
-    const res = await axios.get('/api/settings');
+    const res = await api.get('/api/settings');
     setThreshold(res.data.anonymityThreshold ?? 7);
     setRemindersEnabled(!!res.data.remindersEnabled);
   })();
@@ -23,7 +23,7 @@ useEffect(() => {
 const onSave = async () => {
   try {
     setLoading(true);
-    await axios.put('/api/settings', {
+    await api.put('/api/settings', {
       anonymityThreshold: threshold,
       remindersEnabled,
     });

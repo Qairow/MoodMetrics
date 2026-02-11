@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from "../api";
 import { Settings, Users, Flag, User } from 'lucide-react';
 import './RegisterRole.css';
 import adminIcon from '../assets/roles/admin.jpg';
@@ -18,7 +18,7 @@ export default function RegisterRole() {
 
   const loadDepartments = async () => {
     try {
-      const response = await axios.get('/api/employees/departments');
+      const response = await api.get('/api/employees/departments');
       setDepartments(response.data);
     } catch (error) {
       console.error('Failed to load departments', error);

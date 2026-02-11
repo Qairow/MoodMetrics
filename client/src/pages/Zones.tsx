@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import { api } from "../api";
 import { ShieldCheck, AlertTriangle, Flame } from 'lucide-react';
 import './Zones.css';
 
@@ -47,7 +47,7 @@ export default function Zones() {
          * Если у тебя уже есть API — подстрой URL.
          * Я сделал максимально безопасно: если API нет — покажет fallback.
          */
-        const res = await axios.get('/api/zones/summary');
+        const res = await api.get('/api/zones/summary');
         // ожидаемый формат: [{ type, title, subtitle, count }]
         if (Array.isArray(res.data) && res.data.length) {
           setZones(res.data);

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { api } from "@/api";
 import { MessageCircle, X, Send } from "lucide-react";
 import "./PsychChatWidget.css";
 
@@ -37,7 +37,7 @@ export default function PsychChatWidget() {
     setBusy(true);
 
     try {
-      const r = await axios.post("/api/ai/chat", { messages: next });
+      const r = await api.post("/api/ai/chat", { messages: next });
       const answer = String(r.data?.text || "").trim() || "Не получилось ответить. Попробуй ещё раз.";
       setMsgs((prev) => [...prev, { role: "assistant", content: answer }]);
     } catch (e: any) {

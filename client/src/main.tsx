@@ -8,9 +8,9 @@ import './styles/theme.css';
 import './styles/ui.css';
 import './styles/global.css';
 
-import axios from "axios";
+import { api } from './api.ts'
 
-axios.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
     config.headers = config.headers ?? {};

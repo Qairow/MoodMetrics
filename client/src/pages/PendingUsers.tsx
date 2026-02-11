@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from "../api";
 import { CheckCircle2, RefreshCw } from 'lucide-react';
 import './PendingUsers.css';
 
@@ -22,7 +22,7 @@ export default function PendingUsers() {
     try {
       setError('');
       setLoading(true);
-      const res = await axios.get('/api/employees/pending');
+      const res = await api.get('/api/employees/pending');
       setList(res.data);
     } catch (e: any) {
       setError(e?.response?.data?.error || 'Не удалось загрузить список');
@@ -37,7 +37,7 @@ export default function PendingUsers() {
 
   const approve = async (id: string) => {
     try {
-      await axios.put(`/api/employees/${id}/approve`);
+      await api.put(`/api/employees/${id}/approve`);
       await load();
     } catch (e: any) {
       setError(e?.response?.data?.error || 'Не удалось подтвердить');

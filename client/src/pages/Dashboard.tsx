@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from "../api";
+
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Search, Plus } from 'lucide-react';
@@ -42,10 +43,10 @@ export default function Dashboard() {
   const loadData = async () => {
     try {
       const [metricsRes, dynamicsRes, zonesRes, recRes] = await Promise.all([
-        axios.get('/api/dashboard/metrics'),
-        axios.get('/api/dashboard/dynamics'),
-        axios.get('/api/dashboard/problem-zones'),
-        axios.get('/api/dashboard/recommendations'),
+        api.get('/dashboard/metrics'),
+        api.get('/dashboard/dynamics'),
+        api.get('/dashboard/problem-zones'),
+        api.get('/dashboard/recommendations'),
       ]);
 
       setMetrics(metricsRes.data);

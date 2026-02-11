@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 import logo from '../assets/moodmetricslogo.jpg';
-import {API} from "../api"
+import {api} from "../api"
+
+
 
 
 export default function Login() {
@@ -17,7 +19,7 @@ export default function Login() {
     e.preventDefault();
     setError('');
 
-     if (!API) {
+     if (!api) {
       setError("VITE_API_URL не задан в Vercel (Environment Variables).");
       return;
     }

@@ -1,85 +1,77 @@
-// server/src/routes/ai.ts
 import express from "express";
+import OpenAI from "openai";
 import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
-const AI_SYSTEM_PROMPT = process.env.AI_SYSTEM_PROMPT || "";
-const AI_MAX_INPUT_CHARS = Number(process.env.AI_MAX_INPUT_CHARS || "12000");
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-function pickAssistantText(apiJson: any) {
-  const output = apiJson?.output;
-  if (!Array.isArray(output)) return null;
+type Msg = { role: "user" | "assistant"; content: string };
 
-  for (const item of output) {
-    if (item?.type === "message" && item?.role === "assistant") {
-      const content = item?.content;
-      if (Array.isArray(content)) {
-        const txt = content
-          .filter((c: any) => c?.type === "output_text" && typeof c?.text === "string")
-          .map((c: any) => c.text)
-          .join("");
-        if (txt) return txt;
-      }
-    }
-  }
-  return null;
+const SYSTEM_PROMPT = `
+You are "MoodMetrics Psych Consultant" — a supportive, professional psychological consultant in a workplace wellbeing product.
+
+Language:
+- If user writes Russian -> respond Russian.
+- If user writes English -> respond English.
+- If user asks to switch -> switch.
+
+Rules:
+- Keep it practical and concise (2–8 short paragraphs).
+- If user asks nonsense / trolling / irrelevant topics, politely refuse and redirect to wellbeing topics.
+- No hacking, porn, politics, insults.
+- Not a medical diagnosis. Suggest professionals if needed.
+- If self-harm/suicide: provide a safety message and encourage contacting local emergency services/trusted people.
+
+Scope:
+- Stress, burnout, anxiety, conflicts, communication, emotional regulation, sleep hygiene (general), coping, work-life balance.
+`;
+
+function looksJunk(text: string) {
+  const t = (text || "").toLowerCase();
+  const bad = ["порно","взлом","hack","ddos","казино","ставки","политик","оскорб","мем","анекдот","шутк"];
+  return bad.some((k) => t.includes(k));
 }
 
 router.post("/chat", authenticate, async (req, res) => {
   try {
-    if (!OPENAI_API_KEY) return res.status(500).json({ error: "OPENAI_API_KEY is missing" });
-
-    const { messages } = req.body as {
-      messages: { role: "user" | "assistant"; content: string }[];
-    };
-
-    const safeMessages = Array.isArray(messages) ? messages : [];
-    const trimmed = safeMessages
-      .slice(-20)
-      .map((m) => ({
-        role: m.role,
-        content: String(m.content || "").slice(0, 3000),
-      }));
-
-    const payload = {
-      model: OPENAI_MODEL,
-      input: [
-        { role: "system", content: AI_SYSTEM_PROMPT },
-        ...trimmed,
-      ],
-    };
-
-    const raw = JSON.stringify(payload);
-    if (raw.length > AI_MAX_INPUT_CHARS) {
-      return res.status(400).json({ error: "Слишком длинный диалог. Сократи сообщения." });
+    const messages = (req.body?.messages || []) as Msg[];
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: "messages[] is required" });
     }
 
-    const r = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
-      },
-      body: raw,
+    const lastUser = [...messages].reverse().find(m => m?.role === "user")?.content || "";
+    if (!lastUser.trim()) return res.status(400).json({ error: "last user message is empty" });
+
+    if (looksJunk(lastUser)) {
+      const ru = /[а-яё]/i.test(lastUser);
+      return res.json({
+        text: ru
+          ? "Я здесь как психолог-консультант MoodMetrics. Напиши, что реально беспокоит (стресс, тревога, выгорание, конфликт, мотивация) — и я помогу."
+          : "I’m here as a wellbeing consultant. Tell me what’s bothering you (stress, burnout, anxiety, conflict, motivation) and I’ll help.",
+      });
+    }
+
+    const completion = await client.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
+      temperature: 0.6,
+      max_tokens: 450,
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        ...messages.map(m => ({
+          role: m.role,
+          content: String(m.content || "").slice(0, 2000),
+        })),
+      ],
     });
 
-  const data:any = await r.json();
-
-
-    if (!r.ok) {
-      const msg = data?.error?.message || "OpenAI error";
-      return res.status(500).json({ error: msg });
-    }
-
-    const text = pickAssistantText(data) || "";
+    const text = completion.choices?.[0]?.message?.content?.trim() || "…";
     return res.json({ text });
-   } catch (e: any) {
-    return res.status(500).json({ error: e?.message || e?.error?.message || "Internal server error" });
+  } catch (e: any) {
+    console.error("AI error:", e?.message || e);
+    return res.status(500).json({ error: "AI server error" });
   }
-
 });
 
 export default router;
+
