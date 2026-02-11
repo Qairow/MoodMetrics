@@ -10,22 +10,9 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: ADMIN_EMAIL },
-    update: {
-      role: "admin",
-      approved: true,
-      password: passwordHash,
-      name: "Admin",
-    },
-    create: {
-      email: ADMIN_EMAIL,
-      password: passwordHash,
-      role: "admin",
-      approved: true,
-      name: "Admin",
-    },
+    update: { role: "admin", approved: true, password: passwordHash, name: "Admin" },
+    create: { email: ADMIN_EMAIL, password: passwordHash, role: "admin", approved: true, name: "Admin" },
   });
-
-  console.log(`✅ Admin ready: ${ADMIN_EMAIL} / ${ADMIN_PASSWORD}`);
 
   const templates = [
     {
@@ -45,47 +32,41 @@ async function main() {
         "Сон: насколько удаётся высыпаться",
         "Перегруз: сколько задач одновременно давит",
         "Восстановление: получается ли нормально отдыхать",
-        "Выгорание: есть ли ощущение эмоционального истощения",
-        "Дедлайны: насколько реалистичны сроки",
-        "Поддержка: можно ли попросить помощь у команды/лида",
-        "Мотивация: насколько интересно работать сейчас",
+        "Есть ли ощущение эмоционального истощения",
+        "Насколько реалистичны дедлайны",
+        "Можно ли попросить помощь у команды/лида",
+        "Насколько интересно работать сейчас",
       ],
     },
     {
       name: "Командный климат (1–5)",
       questions: [
         "Коммуникация: насколько легко договориться с коллегами",
-        "Напряжение: как часто возникают конфликты/споры",
-        "Поддержка: безопасно ли высказывать мнение",
-        "Уважение: ощущаешь ли уважение в команде",
-        "Ясность: понятно ли распределены роли и ответственность",
-        "Справедливость: насколько честно распределяется нагрузка",
-        "Общее: комфортно ли работать в этой команде",
+        "Как часто возникают конфликты/споры",
+        "Безопасно ли высказывать мнение",
+        "Ощущаешь ли уважение в команде",
+        "Понятно ли распределены роли и ответственность",
+        "Насколько честно распределяется нагрузка",
+        "Комфортно ли работать в этой команде",
       ],
     },
   ];
 
   for (const t of templates) {
     const exists = await prisma.surveyTemplate.findFirst({ where: { name: t.name } });
-    if (exists) {
-      console.log(`ℹ️ Template exists: ${t.name}`);
-      continue;
-    }
+    if (exists) continue;
 
     await prisma.surveyTemplate.create({
       data: {
         name: t.name,
         questions: {
-          create: t.questions.map((text) => ({
-            text,
-            type: "scale",
-          })),
+          create: t.questions.map((text) => ({ text, type: "scale" })),
         },
       },
     });
-
-    console.log(`✅ Template created: ${t.name}`);
   }
+
+  console.log("✅ Seed done");
 }
 
 main()
