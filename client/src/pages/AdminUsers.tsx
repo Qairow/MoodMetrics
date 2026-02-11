@@ -16,7 +16,7 @@ export default function Users() {
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved'>('all');
 
   const loadUsers = async () => {
-    const res = await api.get('/api/users');
+    const res = await api.get('/users');
     setUsers(res.data);
   };
 
@@ -25,7 +25,7 @@ export default function Users() {
   }, []);
 
   const approveUser = async (id: string) => {
-    await api.put(`/api/users/${id}/approve`);
+    await api.put(`/users/${id}/approve`);
     loadUsers();
   };
 

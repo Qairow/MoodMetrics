@@ -62,8 +62,8 @@ export default function Employees() {
       try {
         setLoading(true);
         const [empRes, deptRes] = await Promise.all([
-          api.get<Employee[]>("/api/employees"),
-          api.get<Dept[]>("/api/employees/departments"),
+          api.get<Employee[]>("/employees"),
+          api.get<Dept[]>("/employees/departments"),
         ]);
         setEmployees(empRes.data || []);
         setDepartments(deptRes.data || []);

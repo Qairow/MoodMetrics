@@ -18,7 +18,7 @@ export default function RegisterRole() {
 
   const loadDepartments = async () => {
     try {
-      const response = await api.get('/api/employees/departments');
+      const response = await api.get('/employees/departments');
       setDepartments(response.data);
     } catch (error) {
       console.error('Failed to load departments', error);

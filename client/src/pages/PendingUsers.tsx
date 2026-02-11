@@ -22,7 +22,7 @@ export default function PendingUsers() {
     try {
       setError('');
       setLoading(true);
-      const res = await api.get('/api/employees/pending');
+      const res = await api.get('/employees/pending');
       setList(res.data);
     } catch (e: any) {
       setError(e?.response?.data?.error || 'Не удалось загрузить список');
@@ -37,7 +37,7 @@ export default function PendingUsers() {
 
   const approve = async (id: string) => {
     try {
-      await api.put(`/api/employees/${id}/approve`);
+      await api.put(`/employees/${id}/approve`);
       await load();
     } catch (e: any) {
       setError(e?.response?.data?.error || 'Не удалось подтвердить');

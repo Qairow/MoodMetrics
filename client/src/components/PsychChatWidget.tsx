@@ -37,7 +37,7 @@ export default function PsychChatWidget() {
     setBusy(true);
 
     try {
-      const r = await api.post("/api/ai/chat", { messages: next });
+    const r = await api.post("/ai/chat", { messages: next });
       const answer = String(r.data?.text || "").trim() || "Не получилось ответить. Попробуй ещё раз.";
       setMsgs((prev) => [...prev, { role: "assistant", content: answer }]);
     } catch (e: any) {

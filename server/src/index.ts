@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.js";
-import surveysRoutes from "./routes/surveys.js";
+import surveysRouter from "./routes/surveys.js";
 import employeesRoutes from "./routes/employees.js";
 import dashboardRoutes from "./routes/dashboard.js";
 import zonesRoutes from "./routes/zones.js";
@@ -12,6 +12,7 @@ import settingsRoutes from "./routes/settings.js";
 import responsesRoutes from "./routes/responses.js";
 import adminUsersRoutes from "./routes/adminUsers.js";
 import aiRoutes from "./routes/ai.js";
+import aiRouter from "./routes/ai.js";
 
 import { initializeData } from "./data/initialize.js";
 
@@ -54,8 +55,12 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 // routes
 app.use("/api/admin/users", adminUsersRoutes);
+
+
+app.use("/api/ai", aiRouter);
+
 app.use("/api/auth", authRoutes);
-app.use("/api/surveys", surveysRoutes);
+app.use("/api/surveys", surveysRouter);
 app.use("/api/employees", employeesRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/zones", zonesRoutes);

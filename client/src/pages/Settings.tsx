@@ -13,7 +13,7 @@ const [loading, setLoading] = useState(false);
 
 useEffect(() => {
   (async () => {
-    const res = await api.get('/api/settings');
+    const res = await api.get('/settings');
     setThreshold(res.data.anonymityThreshold ?? 7);
     setRemindersEnabled(!!res.data.remindersEnabled);
   })();
@@ -23,7 +23,7 @@ useEffect(() => {
 const onSave = async () => {
   try {
     setLoading(true);
-    await api.put('/api/settings', {
+    await api.put('/settings', {
       anonymityThreshold: threshold,
       remindersEnabled,
     });

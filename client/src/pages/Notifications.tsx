@@ -37,7 +37,7 @@ export default function Notifications() {
 
       // ✅ пробуем взять с сервера
       // ожидаемый формат: [{id,title,message,type,createdAt,isRead}]
-      const res = await api.get('/api/notifications');
+      const res = await api.get('/notifications');
       setItems(res.data);
     } catch (e) {
       // ✅ если API пока нет — показываем демо (как на макете)

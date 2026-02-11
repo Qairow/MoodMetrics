@@ -47,7 +47,7 @@ export default function Zones() {
          * Если у тебя уже есть API — подстрой URL.
          * Я сделал максимально безопасно: если API нет — покажет fallback.
          */
-        const res = await api.get('/api/zones/summary');
+        const res = await api.get('/zones/summary');
         // ожидаемый формат: [{ type, title, subtitle, count }]
         if (Array.isArray(res.data) && res.data.length) {
           setZones(res.data);
