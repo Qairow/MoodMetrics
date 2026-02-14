@@ -64,8 +64,8 @@ export default function Employees() {
       try {
         setLoading(true);
         const [empRes, deptRes] = await Promise.all([
-  api.get("/api/employees"),
-  api.get("/api/employees/departments"),
+  api.get("/employees"),
+  api.get("/employees/departments"),
 ]);
 
 setEmployees(safeArray<Employee>(empRes.data));

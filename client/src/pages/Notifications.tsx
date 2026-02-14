@@ -76,7 +76,7 @@ export default function Notifications() {
   const markAllRead = async () => {
     try {
       // если есть сервер — отмечаем там
-      await api.post('/api/notifications/mark-read');
+      await api.post('/notifications/mark-read');
     } catch {
       // если сервера нет — просто локально
     }
