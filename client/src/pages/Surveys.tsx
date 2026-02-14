@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Plus, Play, Wand2, BarChart3, Archive, RotateCcw } from "lucide-react";
 import { api } from "../api";
 import "./Surveys.css";
+import {safeArray } from "../utils/safe";
+
 
 type SurveyRow={
   id:string;
@@ -32,8 +34,20 @@ export default function Surveys(){
   const load=async()=>{
     try{
       setLoading(true);
-      const r=await api.get("/surveys");
-      setRows(r.data);
+     const res = await api.get("/surveys");
+setRows(safeArray<SurveyRow>(res.data));
+const data = res.data;
+
+// делаем rows ВСЕГДА массивом
+const list =
+  Array.isArray(data) ? data :
+  Array.isArray(data?.surveys) ? data.surveys :
+  Array.isArray(data?.items) ? data.items :
+  Array.isArray(data?.data) ? data.data :
+  [];
+
+setRows(list);
+
     } finally{
       setLoading(false);
     }

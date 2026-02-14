@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Save, ChevronLeft } from "lucide-react";
 import { api } from "../api";
 import "./SurveyCreate.css";
+import { safeArray } from "@/utils/safe";
+
 
 type Template={
   id:string;
@@ -27,8 +29,15 @@ export default function SurveyCreate(){
   useEffect(()=>{
     (async()=>{
       try{
-        const t=await api.get("/surveys/templates");
-        setTemplates(t.data);
+const t = await api.get("/surveys/templates");
+setTemplates(safeArray((t.data as any)?.templates ?? t.data));
+const list = safeArray<Template>(t.data);
+
+
+
+setTemplates(list);
+if (list.length) setTemplateId(list[0].id);
+
         if(t.data?.length) setTemplateId(t.data[0].id);
       } catch{
         setError("Не удалось загрузить шаблоны опросов");
@@ -45,7 +54,11 @@ export default function SurveyCreate(){
     setError("");
     try{
       const res=await api.post("/surveys",{
-        name,templateId,periodicity,anonymityThreshold:threshold,departments
+        name,
+        templateId,
+        periodicity,
+        anonymityThreshold:threshold,
+        departments
       });
       navigate(`/app/surveys/${res.data.id}`);
     } catch(e:any){

@@ -3,6 +3,8 @@ import { api } from "../api";
 import { useNavigate } from "react-router-dom";
 import { Plus, Users, Activity, AlertTriangle, Smile } from "lucide-react";
 import "./Employee.css";
+import { safeArray } from "../utils/safe";
+
 
 type Employee = {
   id: string;
@@ -62,11 +64,13 @@ export default function Employees() {
       try {
         setLoading(true);
         const [empRes, deptRes] = await Promise.all([
-          api.get<Employee[]>("/employees"),
-          api.get<Dept[]>("/employees/departments"),
-        ]);
-        setEmployees(empRes.data || []);
-        setDepartments(deptRes.data || []);
+  api.get("/api/employees"),
+  api.get("/api/employees/departments"),
+]);
+
+setEmployees(safeArray<Employee>(empRes.data));
+setDepartments(safeArray<Dept>(deptRes.data));
+
       } catch (e) {
         console.error("Failed to load employees", e);
         setEmployees([]);

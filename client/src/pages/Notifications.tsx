@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { api } from "../api";
 import { Bell, Filter, CheckCircle2 } from 'lucide-react';
 import './Notifications.css';
+import { safeArray } from "../utils/safe";
 
 type NotificationType = 'all' | 'survey' | 'system' | 'risk';
 
@@ -38,7 +39,7 @@ export default function Notifications() {
       // ✅ пробуем взять с сервера
       // ожидаемый формат: [{id,title,message,type,createdAt,isRead}]
       const res = await api.get('/notifications');
-      setItems(res.data);
+      setItems(safeArray(res.data));
     } catch (e) {
       // ✅ если API пока нет — показываем демо (как на макете)
       setItems([

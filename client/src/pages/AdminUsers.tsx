@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from "../api";
 import './AdminUsers.css';
-
+import { safeArray } from "../utils/safe";
 
 type User = {
   id: string;
@@ -17,7 +17,7 @@ export default function Users() {
 
   const loadUsers = async () => {
     const res = await api.get('/users');
-    setUsers(res.data);
+    setUsers(safeArray(res.data));
   };
 
   useEffect(() => {

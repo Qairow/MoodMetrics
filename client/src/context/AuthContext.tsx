@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     if (!api) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
 
-    const response = await api.post("/api/auth/login", { email, password });
+    const response = await api.post("/auth/login", { email, password });
     const { token: newToken, user: newUser } = response.data as { token: string; user: User };
 
     setToken(newToken);
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   ) => {
     if (!api) throw new Error("VITE_API_URL is missing (set it in Vercel and client/.env)");
 
-    const response = await api.post("/api/auth/register", {
+    const response = await api.post("/auth/register", {
       email,
       password,
       name,

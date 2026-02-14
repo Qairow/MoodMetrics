@@ -25,7 +25,27 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   process.env.FRONTEND_URL || "",
-].filter(Boolean);
+].filter(Boolean) as String[];
+
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, cb) => {
+    // ✅ без origin (Postman, SSR, curl) — разрешаем
+    if (!origin) return cb(null, true);
+
+    // ✅ в DEV проще: разрешаем всё, чтобы не ловить CORS при отладке
+    if (process.env.NODE_ENV !== "production") return cb(null, true);
+
+    // ✅ в PROD — только whitelist
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+
+    // ❗ НЕ кидаем ошибку, просто запрещаем
+    return cb(null, false);
+  },
+  credentials: false,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
 app.use(
   cors({

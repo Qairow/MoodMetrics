@@ -1,26 +1,25 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES = process.env.JWT_EXPIRES || "7d";
 
-export function generateToken(userId: string, role: string): string {
-  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: '7d' });
+if (!JWT_SECRET) {
+  console.warn("⚠️ JWT_SECRET is not set. Add it to server/.env and Render env vars.");
 }
 
-export function verifyToken(token: string): { userId: string; role: string } | null {
+export type JWTPayload = { userId: string; role: string };
+
+export function generateToken(userId: string, role: string) {
+  if (!JWT_SECRET) throw new Error("JWT_SECRET not set");
+  const payload: JWTPayload = { userId, role };
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+}
+
+export function verifyToken(token: string): JWTPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string; role: string };
-    return decoded;
-  } catch (error) {
+    if (!JWT_SECRET) return null;
+    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+  } catch {
     return null;
   }
-}
-
-export function hashPassword(password: string): string {
-  // In production, use bcrypt
-  return password; // Simplified for MVP
-}
-
-export function comparePassword(password: string, hash: string): boolean {
-  // In production, use bcrypt.compare
-  return password === hash; // Simplified for MVP
 }

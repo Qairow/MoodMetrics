@@ -6,6 +6,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Search, Plus } from 'lucide-react';
 import './Dashboard.css';
 
+import { safeArray } from "../utils/safe";
+
+
 interface Metrics {
   wellbeingIndex: { overall: number; status: string };
   burnoutRisk: { value: number; status: string };
@@ -39,6 +42,24 @@ export default function Dashboard() {
   useEffect(() => {
     loadData();
   }, []);
+const normalizeMetrics = (d: any): Metrics => ({
+  wellbeingIndex: {
+    overall: Number(d?.wellbeingIndex?.overall ?? 0),
+    status: String(d?.wellbeingIndex?.status ?? "risk"),
+  },
+  burnoutRisk: {
+    value: Number(d?.burnoutRisk?.value ?? 0),
+    status: String(d?.burnoutRisk?.status ?? "low"),
+  },
+  tensionConflicts: {
+    value: Number(d?.tensionConflicts?.value ?? 0),
+    status: String(d?.tensionConflicts?.status ?? "low"),
+  },
+  surveyCoverage: {
+    value: Number(d?.surveyCoverage?.value ?? 0),
+    period: String(d?.surveyCoverage?.period ?? "14 дней"),
+  },
+});
 
   const loadData = async () => {
     try {
@@ -49,10 +70,10 @@ export default function Dashboard() {
         api.get('/dashboard/recommendations'),
       ]);
 
-      setMetrics(metricsRes.data);
-      setDynamics(dynamicsRes.data);
-      setProblemZones(zonesRes.data);
-      setRecommendations(recRes.data);
+      setMetrics(normalizeMetrics(metricsRes.data));
+      setDynamics(safeArray(dynamicsRes.data));
+      setProblemZones(safeArray(zonesRes.data));
+      setRecommendations(safeArray(recRes.data));
     } catch (error) {
       console.error('Failed to load dashboard data', error);
       // Чтобы не висело "Загрузка..." вечно
@@ -145,9 +166,13 @@ export default function Dashboard() {
         <div className="metric-card">
           <div className="metric-header">
             <h3>Индекс благополучия</h3>
-            <span className="status-badge" style={{ backgroundColor: getStatusColor(metrics.wellbeingIndex.status) }}>
-              {getStatusLabel(metrics.wellbeingIndex.status)}
-            </span>
+           <span
+  className="status-badge"
+  style={{ backgroundColor: getStatusColor(metrics?.wellbeingIndex?.status || "risk") }}
+>
+  {getStatusLabel(metrics?.wellbeingIndex?.status || "risk")}
+</span>
+
           </div>
           <div className="metric-value">{metrics.wellbeingIndex.overall}</div>
           <p className="metric-description">Сводный показатель по последним 14 дням (агрегировано).</p>
@@ -156,7 +181,9 @@ export default function Dashboard() {
         <div className="metric-card">
           <div className="metric-header">
             <h3>Риск выгорания</h3>
-            <span className="status-badge" style={{ backgroundColor: getStatusColor(metrics.burnoutRisk.status) }}>
+            <span className="status-badge"style={{ backgroundColor: getStatusColor(metrics?.burnoutRisk?.status || "low") }}
+
+>
               {getStatusLabel(metrics.burnoutRisk.status)}
             </span>
           </div>
