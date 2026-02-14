@@ -1,3 +1,4 @@
+// src/index.ts
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -23,28 +24,24 @@ const PORT = Number(process.env.PORT || 5000);
 const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
-  process.env.FRONTEND_URL, // важно в Render
+  process.env.FRONTEND_URL, // Render -> https://....vercel.app
 ].filter(Boolean) as string[];
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, cb) => {
-    if (!origin) return cb(null, true); // Postman/curl/healthcheck
+    if (!origin) return cb(null, true);
 
-    // DEV: разрешаем всё
     if (process.env.NODE_ENV !== "production") return cb(null, true);
 
-    // PROD: только whitelist
     if (allowedOrigins.includes(origin)) return cb(null, true);
 
-    // запрет
     return cb(null, false);
   },
-  credentials: false, // если JWT через Authorization header
+  credentials: false, // JWT через Authorization header
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-// CORS должен быть ДО роутов
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
@@ -73,8 +70,9 @@ app.use((req, res) => {
 });
 
 (async () => {
-  await initializeData(); // ✅ один раз
+  await initializeData(); // один раз
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log("Allowed origins:", allowedOrigins);
   });
 })();
