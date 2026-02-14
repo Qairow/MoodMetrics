@@ -1,24 +1,27 @@
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES = process.env.JWT_EXPIRES || "7d";
-
-if (!JWT_SECRET) {
-  console.warn("⚠️ JWT_SECRET is not set. Add it to server/.env and Render env vars.");
-}
+import jwt, { SignOptions } from "jsonwebtoken";
 
 export type JWTPayload = { userId: string; role: string };
 
+function getJwtSecret(): string {
+  const s = process.env.JWT_SECRET;
+  if (!s) throw new Error("JWT_SECRET not set");
+  return s;
+}
+
+function getJwtExpires(): SignOptions["expiresIn"] {
+  // jsonwebtoken типизирует expiresIn как StringValue | number
+  // поэтому нужно привести тип (или валидировать строку)
+  return (process.env.JWT_EXPIRES ?? "7d") as SignOptions["expiresIn"];
+}
+
 export function generateToken(userId: string, role: string) {
-  if (!JWT_SECRET) throw new Error("JWT_SECRET not set");
   const payload: JWTPayload = { userId, role };
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: getJwtExpires() });
 }
 
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    if (!JWT_SECRET) return null;
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, getJwtSecret()) as JWTPayload;
   } catch {
     return null;
   }
