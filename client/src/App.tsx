@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import Home from './pages/Home';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import RegisterRole from './pages/RegisterRole';
 import RegisterAdmin from './pages/RegisterAdmin';
@@ -28,24 +28,25 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-<Route path="/app/survey/pulse" element={<PulseSurvey />} />
-<Route path="/app/admin/users" element={<AdminUsers />} />
+          {/* ─── Public routes (вынесенные наверх) ─── */}
+          <Route path="/app/survey/pulse" element={<PulseSurvey />} />
+          <Route path="/app/admin/users" element={<AdminUsers />} />
+          <Route path="/app/surveys/new" element={<SurveyCreate />} />
+          <Route path="/app/surveys/:id" element={<SurveyDetails />} />
+          <Route path="/app/admin/pending" element={<PendingUsers />} />
+          <Route path="/app/surveys/create" element={<SurveyCreate />} />
 
-<Route path="/app/surveys/new" element={<SurveyCreate />} />
-<Route path="/app/surveys/:id" element={<SurveyDetails />} />
-<Route path="/app/admin/pending" element={<PendingUsers />} />
-<Route path="/app/surveys/create" element={<SurveyCreate />} />
-<Route path="/app/surveys/:id" element={<SurveyDetails />} />
-
-
-          <Route path="/" element={<Home />} />
+          {/* ─── Landing & Auth ─── */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
-                    
+
           <Route path="/register" element={<RegisterRole />} />
           <Route path="/register/admin" element={<RegisterAdmin />} />
           <Route path="/register/hr" element={<RegisterHR />} />
           <Route path="/register/manager" element={<RegisterManager />} />
           <Route path="/register/employee" element={<RegisterEmployee />} />
+
+          {/* ─── Protected App ─── */}
           <Route
             path="/app"
             element={
@@ -63,6 +64,10 @@ function App() {
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
           </Route>
+
+          {/* ─── 404 fallback ─── */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

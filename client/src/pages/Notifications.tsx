@@ -11,14 +11,57 @@ type NotificationItem = {
   title: string;
   message?: string;
   type: 'survey' | 'system' | 'risk';
-  createdAt: string; // можно "сегодня" / "вчера" / ISO
+  createdAt: string;
   isRead?: boolean;
+};
+
+// ─── Форматирование даты ────────────────────────────────────────
+function formatDate(dateStr: string): string {
+  // если уже человекочитаемое — возвращаем как есть
+  if (!dateStr.includes('T') && !dateStr.match(/^\d{4}-/)) return dateStr;
+
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMin = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMin < 1)   return 'Только что';
+    if (diffMin < 60)  return `${diffMin} мин. назад`;
+    if (diffHours < 24) return `${diffHours} ч. назад`;
+    if (diffDays === 1) return 'Вчера';
+    if (diffDays < 7)  return `${diffDays} дн. назад`;
+
+    return date.toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  survey: 'Опрос',
+  system: 'Система',
+  risk:   'Риск',
+};
+
+const TYPE_COLORS: Record<string, string> = {
+  survey: 'var(--purple)',
+  system: '#3b82f6',
+  risk:   'var(--red)',
 };
 
 export default function Notifications() {
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState<NotificationItem[]>([]);
-  const [filter, setFilter] = useState<NotificationType>('all');
+  const [items, setItems]     = useState<NotificationItem[]>([]);
+  const [filter, setFilter]   = useState<NotificationType>('all');
 
   const filtered = useMemo(() => {
     if (filter === 'all') return items;
@@ -27,44 +70,37 @@ export default function Notifications() {
 
   const unreadCount = useMemo(() => items.filter((x) => !x.isRead).length, [items]);
 
-  useEffect(() => {
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const load = async () => {
     try {
       setLoading(true);
-
-      // ✅ пробуем взять с сервера
-      // ожидаемый формат: [{id,title,message,type,createdAt,isRead}]
       const res = await api.get('/notifications');
       setItems(safeArray(res.data));
-    } catch (e) {
-      // ✅ если API пока нет — показываем демо (как на макете)
+    } catch {
       setItems([
         {
           id: 'n1',
           title: 'Напоминание об опросе',
           message: 'Пожалуйста, пройди пульс-опрос.',
           type: 'survey',
-          createdAt: 'сегодня',
+          createdAt: new Date(Date.now() - 3600000).toISOString(),
           isRead: false,
         },
         {
           id: 'n2',
-          title: 'Система',
-          message: 'Настройки анонимности обновлены.',
+          title: 'Настройки обновлены',
+          message: 'Настройки анонимности успешно сохранены.',
           type: 'system',
-          createdAt: 'вчера',
+          createdAt: new Date(Date.now() - 86400000).toISOString(),
           isRead: true,
         },
         {
           id: 'n3',
-          title: 'Риск',
-          message: 'В одном из отделов вырос риск выгорания.',
+          title: 'Риск выгорания',
+          message: 'В отделе "Поддержка" вырос риск выгорания.',
           type: 'risk',
-          createdAt: '3 дн. назад',
+          createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
           isRead: false,
         },
       ]);
@@ -74,20 +110,8 @@ export default function Notifications() {
   };
 
   const markAllRead = async () => {
-    try {
-      // если есть сервер — отмечаем там
-      await api.post('/notifications/mark-read');
-    } catch {
-      // если сервера нет — просто локально
-    }
+    try { await api.post('/notifications/mark-read'); } catch { /* игнорируем */ }
     setItems((prev) => prev.map((x) => ({ ...x, isRead: true })));
-  };
-
-  const onApplyFilter = async () => {
-    // Если хочешь реально фильтровать на сервере:
-    // const res = await axios.get('/api/notifications', { params: { type: filter } });
-    // setItems(res.data);
-    // Пока просто фильтруем на клиенте (уже сделано в filtered)
   };
 
   return (
@@ -97,7 +121,6 @@ export default function Notifications() {
           <h1 className="mm-title">Уведомления</h1>
           <div className="mm-subtitle">Системные события, опросы и риски</div>
         </div>
-
         <button className="mm-btn mm-btn-light" type="button" onClick={markAllRead}>
           <CheckCircle2 size={18} />
           Отметить прочитанным
@@ -105,20 +128,19 @@ export default function Notifications() {
       </div>
 
       <div className="mm-notifications-grid">
-        {/* ЛЕВО: Лента */}
+        {/* Лента */}
         <section className="mm-card mm-feed">
           <div className="mm-card-head">
             <div className="mm-card-head-left">
-              <div className="mm-card-icon">
-                <Bell size={18} />
-              </div>
+              <div className="mm-card-icon"><Bell size={18} /></div>
               <div>
                 <div className="mm-card-title">Лента</div>
                 <div className="mm-card-desc">Последние события</div>
               </div>
             </div>
-
-            <div className="mm-pill">{items.length}</div>
+            {unreadCount > 0 && (
+              <div className="mm-pill mm-pill-unread">{unreadCount} новых</div>
+            )}
           </div>
 
           {loading ? (
@@ -128,12 +150,27 @@ export default function Notifications() {
           ) : (
             <div className="mm-feed-list">
               {filtered.map((n) => (
-                <div key={n.id} className={`mm-feed-item ${n.isRead ? 'is-read' : ''}`}>
+                <div key={n.id} className={`mm-feed-item ${n.isRead ? 'is-read' : 'is-unread'}`}>
                   <div className="mm-feed-row">
-                    <div className="mm-feed-title">{n.title}</div>
-                    <div className="mm-feed-date">{n.createdAt}</div>
+                    <div className="mm-feed-left">
+                      {!n.isRead && <span className="mm-feed-dot" />}
+                      <div>
+                        <div className="mm-feed-title">{n.title}</div>
+                        {n.message && <div className="mm-feed-text">{n.message}</div>}
+                      </div>
+                    </div>
+                    <div className="mm-feed-right">
+                      {/* ✅ Тип уведомления */}
+                      <span
+                        className="mm-feed-type"
+                        style={{ color: TYPE_COLORS[n.type] }}
+                      >
+                        {TYPE_LABELS[n.type]}
+                      </span>
+                      {/* ✅ Читаемая дата */}
+                      <span className="mm-feed-date">{formatDate(n.createdAt)}</span>
+                    </div>
                   </div>
-                  {n.message ? <div className="mm-feed-text">{n.message}</div> : null}
                 </div>
               ))}
             </div>
@@ -146,30 +183,30 @@ export default function Notifications() {
           </div>
         </section>
 
-        {/* ПРАВО: Фильтр */}
+        {/* Фильтр */}
         <aside className="mm-card mm-filter">
           <div className="mm-card-head">
             <div className="mm-card-head-left">
-              <div className="mm-card-icon">
-                <Filter size={18} />
-              </div>
+              <div className="mm-card-icon"><Filter size={18} /></div>
               <div>
                 <div className="mm-card-title">Фильтр</div>
                 <div className="mm-card-desc">Показывать тип уведомлений</div>
               </div>
             </div>
           </div>
-
           <div className="mm-filter-body">
             <label className="mm-label">Тип</label>
-            <select className="mm-select" value={filter} onChange={(e) => setFilter(e.target.value as NotificationType)}>
+            <select
+              className="mm-select"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as NotificationType)}
+            >
               <option value="all">Все</option>
               <option value="survey">Опросы</option>
               <option value="system">Система</option>
               <option value="risk">Риск</option>
             </select>
-
-            <button className="mm-btn mm-btn-primary mm-btn-wide" type="button" onClick={onApplyFilter}>
+            <button className="mm-btn mm-btn-primary mm-btn-wide" type="button">
               Применить
             </button>
           </div>
