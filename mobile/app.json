@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "MoodMetrics",
+    "slug": "moodmetrics-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#7c5cff"
+    },
+    "android": {
+      "package": "com.moodmetrics.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#7c5cff"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": []
+  }
+}
