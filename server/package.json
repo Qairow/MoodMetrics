@@ -1,14 +1,59 @@
 {
   "name": "psycheck-server",
   "version": "0.1.0",
+  "type": "module",
+  "description": "MoodMetrics HR Wellbeing Dashboard API",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "npx prisma generate && tsc",
+    "start": "node dist/index.js",
+    "seed": "tsx prisma/seed.ts",
+    "migrate": "npx prisma migrate deploy",
+    "postinstall": "npx prisma generate && npx prisma migrate deploy && npx prisma db seed --skip-generate"
+  },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
-  "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "prisma generate && tsc",
-    "start": "node dist/index.js",
-    "seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate && prisma migrate deploy && prisma db seed --skip-generate"
+  "keywords": [
+    "hr",
+    "wellbeing",
+    "dashboard",
+    "express",
+    "prisma",
+    "postgresql"
+  ],
+  "author": "Kaiyrly Yerkhozhayev",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "openai": "^6.21.0",
+    "pg": "^8.18.0",
+    "uuid": "^9.0.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.19.33",
+    "@types/uuid": "^9.0.1",
+    "prisma": "^7.3.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
