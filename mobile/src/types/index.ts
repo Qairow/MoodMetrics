@@ -107,4 +107,5 @@ export type MainTabParamList = {
   Zones: undefined;
   Notifications: undefined;
   Profile: undefined;
+  Generator: undefined;
 };

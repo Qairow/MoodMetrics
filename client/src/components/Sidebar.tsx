@@ -6,7 +6,7 @@ import {
   User,
   Bell,
   Settings,
-  LogOut,
+  Sparkles,
   X,
 } from 'lucide-react';
 import './Sidebar.css';
@@ -34,6 +34,7 @@ export default function Sidebar({ isOpen, onClose }: Props) {
   const menuItems = [
     { path: '/app/dashboard', label: 'Дашборд', icon: LayoutDashboard },
     { path: '/app/surveys', label: 'Опросы', icon: ClipboardList },
+    { path: '/app/survey-generator', label: 'AI Генератор', icon: Sparkles },
     { path: '/app/zones', label: 'Зоны', icon: Flame },
     { path: '/app/employee', label: 'Сотрудник', icon: User },
     { path: '/app/notifications', label: 'Уведомл.', icon: Bell },

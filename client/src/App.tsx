@@ -21,6 +21,7 @@ import SurveyCreate from './pages/SurveyCreate';
 import SurveyDetails from './pages/SurveyDetails';
 import PendingUsers from './pages/PendingUsers';
 import AdminUsers from './pages/AdminUsers';
+import SurveyGenerator from './pages/SurveyGenerator';
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
             <Route path="notifications" element={<Notifications />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="survey-generator" element={<SurveyGenerator />} />
           </Route>
 
           {/* ─── 404 fallback ─── */}

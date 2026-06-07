@@ -14,6 +14,7 @@ import SurveysScreen from '../screens/app/SurveysScreen';
 import ZonesScreen from '../screens/app/ZonesScreen';
 import NotificationsScreen from '../screens/app/NotificationsScreen';
 import ProfileScreen from '../screens/app/ProfileScreen';
+import GeneratorScreen from '../screens/app/GeneratorScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -24,6 +25,7 @@ const TAB_ICONS: Record<string, string> = {
   Zones: '🔥',
   Notifications: '🔔',
   Profile: '👤',
+  Generator: '✨',
 };
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
@@ -58,6 +60,7 @@ function MainTabs() {
       <Tab.Screen name="Zones" component={ZonesScreen} options={{ title: 'Зоны' }} />
       <Tab.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Уведомл.' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Профиль' }} />
+      <Tab.Screen name="Generator" component={GeneratorScreen} options={{ title: 'AI' }} />
     </Tab.Navigator>
   );
 }
